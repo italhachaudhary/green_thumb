@@ -1,0 +1,43 @@
+# Green Thumb AI - Flask Plant Detection and Advisory Application
+# Python Version Requirement: 3.9+
+https://www.python.org/ftp/python/3.11.0/python-3.11.0-amd64.exe
+
+
+# Core Flask framework
+Flask==3.0.0
+
+# Database ORM for Flask
+Flask-SQLAlchemy==3.1.1
+
+# User authentication and session management
+Flask-Login==0.6.3
+
+# OAuth authentication with Google
+Flask-Dance==7.0.0
+
+# Google Generative AI SDK
+google-generativeai==0.8.3
+
+# Roboflow inference SDK
+inference-sdk==0.9.20
+
+# HTTP requests library
+requests==2.31.0
+
+# Additional dependencies that may be required
+Werkzeug==3.0.1
+Jinja2==3.1.2
+MarkupSafe==2.1.3
+itsdangerous==2.1.2
+click==8.1.7
+blinker==1.7.0
+
+# OAuth dependencies
+oauthlib==3.2.2
+requests-oauthlib==1.3.1
+
+# SQLAlchemy (core dependency for Flask-SQLAlchemy)
+SQLAlchemy==2.0.23
+
+# For handling environment variables (recommended)
+python-dotenv==1.0.0

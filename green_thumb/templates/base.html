@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Green Thumb AI{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = { darkMode: "class" };
+    </script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='css/style.css') }}"
+    />
+    <script>
+      // This script must run before the body renders to prevent "flash of unstyled content"
+      if (
+        localStorage.getItem("color-theme") === "dark" ||
+        (!("color-theme" in localStorage) &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches)
+      ) {
+        document.documentElement.classList.add("dark");
+      } else {
+        document.documentElement.classList.remove("dark");
+      }
+    </script>
+  </head>
+  <body class="bg-gray-100 dark:bg-gray-900">
+    <div class="flex flex-col h-screen">
+      <header
+        class="bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-4 shadow-md flex justify-between items-center border-b dark:border-gray-700 flex-shrink-0"
+      >
+        <a href="/" class="text-xl font-bold text-green-700 dark:text-green-500"
+          >🌱 Green Thumb AI</a
+        >
+
+        <nav class="hidden md:flex items-center gap-6">
+          <a
+            href="{{ url_for('index') }}"
+            class="font-semibold text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500"
+            >AI Advisor</a
+          >
+          <a
+            href="{{ url_for('detector') }}"
+            class="font-semibold text-gray-600 dark:text-gray-300 hover:text-green-600 dark:hover:text-green-500"
+            >Disease Detector</a
+          >
+        </nav>
+
+        <div class="hidden md:flex items-center gap-4">
+          <span class="text-sm"
+            >Welcome,
+            <strong class="font-semibold">{{ user_name }}</strong>!</span
+          >
+          <button
+            id="theme-toggle"
+            type="button"
+            class="text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5"
+          >
+            <svg
+              id="theme-toggle-dark-icon"
+              class="hidden w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"
+              ></path>
+            </svg>
+            <svg
+              id="theme-toggle-light-icon"
+              class="hidden w-5 h-5"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+            >
+              <path
+                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 5.05A1 1 0 003.636 6.464l.707.707a1 1 0 001.414-1.414l-.707-.707zM3 11a1 1 0 100-2H2a1 1 0 100 2h1zM6.464 16.364l.707-.707a1 1 0 01-1.414-1.414l-.707.707a1 1 0 011.414 1.414z"
+              ></path>
+            </svg>
+          </button>
+          <a
+            href="#"
+            id="logout-btn"
+            class="bg-red-500 text-white px-4 py-2 rounded-lg font-semibold hover:bg-red-600 transition-colors text-sm"
+            >Logout</a
+          >
+        </div>
+
+        <div class="md:hidden">
+          <button
+            id="menu-btn"
+            class="p-2 rounded-md text-gray-500 dark:text-gray-400"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              ></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="flex-1 overflow-hidden">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div
+      id="mobile-menu"
+      class="hidden fixed inset-0 bg-gray-800 bg-opacity-95 z-40 p-8 text-white"
+    >
+      <button
+        id="close-menu-btn"
+        class="absolute top-6 right-6 p-2 text-gray-300 hover:text-white"
+      >
+        <svg
+          class="w-8 h-8"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"
+          ></path>
+        </svg>
+      </button>
+      <div class="flex flex-col h-full justify-center items-center gap-8">
+        <a href="{{ url_for('index') }}" class="text-2xl font-bold"
+          >AI Advisor</a
+        ><a href="{{ url_for('detector') }}" class="text-2xl font-bold"
+          >Disease Detector</a
+        ><button id="mobile-theme-btn" class="text-2xl font-bold">
+          Toggle Theme</button
+        ><button id="mobile-logout-btn" class="text-2xl font-bold">
+          Logout
+        </button>
+      </div>
+    </div>
+
+    <!-- Modals -->
+    <div
+      id="confirmation-modal"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-sm text-center"
+      >
+        <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">
+          Are you sure?
+        </h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+          This will permanently delete your entire search history. This action
+          cannot be undone.
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            id="cancel-delete-btn"
+            class="px-6 py-2 rounded-lg bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200 font-semibold"
+          >
+            Cancel</button
+          ><button
+            id="confirm-delete-btn"
+            class="px-6 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Individual Item Delete Confirmation Modal -->
+    <div
+      id="item-confirmation-modal"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-sm text-center"
+      >
+        <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">
+          Delete Search Item?
+        </h3>
+        <p
+          id="item-delete-message"
+          class="text-gray-600 dark:text-gray-400 mb-6"
+        >
+          Are you sure you want to delete this search?
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            id="cancel-item-delete-btn"
+            class="px-6 py-2 rounded-lg bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200 font-semibold"
+          >
+            Cancel</button
+          ><button
+            id="confirm-item-delete-btn"
+            class="px-6 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="logout-confirmation-modal"
+      class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    >
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-sm text-center"
+      >
+        <h3 class="text-lg font-bold text-gray-800 dark:text-gray-200 mb-2">
+          Confirm Logout
+        </h3>
+        <p class="text-gray-600 dark:text-gray-400 mb-6">
+          Are you sure you want to log out?
+        </p>
+        <div class="flex justify-center space-x-4">
+          <button
+            id="cancel-logout-btn"
+            class="px-6 py-2 rounded-lg bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-gray-800 dark:text-gray-200 font-semibold"
+          >
+            Cancel</button
+          ><button
+            id="confirm-logout-btn"
+            class="px-6 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-semibold"
+          >
+            Logout
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Child templates will insert their scripts here -->
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

@@ -19,7 +19,6 @@ A Flask-based web application that allows users to upload plant images, detect d
 green_thumb/
 ├── app.py                # Main Flask application
 ├── requirements.txt      # Python dependencies
-├── api.txt               # API documentation or notes
 ├── static/
 │   ├── css/
 │   │   └── style.css     # Stylesheets
@@ -82,7 +81,7 @@ Contains additional resources and static files for plant disease image uploads a
 ```text
 Plant Disease/
 ├── app.py                # (If present) Additional scripts or utilities
-├── api.txt               # API documentation or notes
+├── dataset.txt           # API documentation or notes
 └── static/
         └── uploads/          # Plant disease images
 ```
